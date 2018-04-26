@@ -9,9 +9,6 @@
 import UIKit
 
 class chooseCategoryViewController: UIViewController {
-
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let category = (sender as? UIButton)?.currentTitle{
             if let vcvc = segue.destination as? VocCardViewController{

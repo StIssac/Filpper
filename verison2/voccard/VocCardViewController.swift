@@ -22,16 +22,15 @@ class VocCardViewController: UIViewController {
             return numberWordList
         } else if (category == "Food"){
             return foodWordList
-        } else if(category == "Animal"){
+        } else if(category == "Animals"){
             return animalWordList
-        } else if(category == "Plant"){
+        } else if(category == "Plants"){
             return plantWordList
-        } else if(category == "Earth"){
+        } else if(category == "Landscape"){
             return earthWordList
         }
         return [""]
     }
-    
     
     
     private var WordList = ["word"]
@@ -47,23 +46,25 @@ class VocCardViewController: UIViewController {
             if !hasPost{
                 if wordDisplay == "end"{
                     if hasPost{
-                        firstLabl.text = ""
+                        firstLabel.text = ""
                         SecondLabel.text = "Posted!"
+                        checkButton.alpha = 1.0
                         SecondLabel.textColor = #colorLiteral(red: 0.007843137255, green: 0.1333333333, blue: 0.368627451, alpha: 1)
                         thirdLabel.text = ""
                     }else{
-                        firstLabl.text = ""
+                        firstLabel.text = ""
                         SecondLabel.text = "Post it?"
                         SecondLabel.textColor = #colorLiteral(red: 0.007843137255, green: 0.1333333333, blue: 0.368627451, alpha: 1)
                         thirdLabel.text = ""
                     }
                 }else if wordDisplay == "Start!"{
-                    firstLabl.text = ""
+                    checkButton.alpha = 1.0 // test
+                    firstLabel.text = ""
                     SecondLabel.text = "Start!"
                     SecondLabel.textColor = #colorLiteral(red: 0.007843137255, green: 0.1333333333, blue: 0.368627451, alpha: 1)
                     thirdLabel.text = ""
                 }else if wordDisplay != ""{
-                    firstLabl.text = wordDisplay.components(separatedBy: "+")[0]
+                    firstLabel.text = wordDisplay.components(separatedBy: "+")[0]
                     SecondLabel.text = "---------"
                     SecondLabel.textColor = #colorLiteral(red: 0.862745098, green: 0.8705882353, blue: 0.8705882353, alpha: 1)
                     thirdLabel.text = wordDisplay.components(separatedBy: "+")[1]
@@ -75,7 +76,8 @@ class VocCardViewController: UIViewController {
     }
     lazy var game = test4Model(Category: category, wordlist: WordList)
     
-    @IBOutlet weak var firstLabl: UILabel!
+    @IBOutlet weak var checkButton: UIButton!
+    @IBOutlet weak var firstLabel: UILabel!
     @IBOutlet weak var SecondLabel: UILabel!
     @IBOutlet weak var thirdLabel: UILabel!
     @IBAction func nextOne(_ sender: UIButton) {
@@ -83,13 +85,28 @@ class VocCardViewController: UIViewController {
         if !hasPost{
             if game.postOnCalendar(learncategory : category){
                 hasPost = true
-                firstLabl.text = ""
+                firstLabel.text = ""
                 SecondLabel.text = "Posted!"
                 thirdLabel.text = ""
+                checkButton.alpha = 1.0
             }
         }
     }
     
+    @IBAction func checkCalendar(_ sender: UIButton) {
+            let urlString = "calshow:"
+            if let url = URL(string: urlString) {
+                //根据iOS系统版本，分别处理
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url, options: [:],
+                                              completionHandler: {
+                                                (success) in
+                    })
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+    }
     
     @IBAction func lastOne(_ sender: UIButton) {
         wordDisplay = game.ReturnWord(at: -1)
